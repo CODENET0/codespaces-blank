@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Link Viewer</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Helvetica Neue', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #333333;
+            color: #ffffff;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 20px;
+            border: 2px solid #ffffff;
+            transition: border 0.3s, border-radius 0.3s;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .settings {
+            margin-top: 30px;
+            text-align: left;
+            width: 80%;
+        }
+        .slider {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .toggle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .toggle label {
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
+        .toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+        .divider {
+            border-top: 1px solid #ffffff;
+            width: 100%;
+            margin-top: 30px;
+        }
+        .dev-details {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Link Viewer</h1>
+        <input type="text" id="imageUrl" placeholder="Paste your image URL here">
+        <button onclick="viewImage()">OK</button>
+        <img id="displayImage" src="" alt="Your image will appear here">
+        <div class="details" id="imageDetails"></div>
+    </div>
+    <div class="settings">
+        <h2>Settings</h2>
+        <div class="toggle">
+            <input type="checkbox" id="borderToggle" onchange="toggleBorder()">
+            <label for="borderToggle">Show Border</label>
+        </div>
+        <div class="toggle">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+            <label for="themeToggle">Dark Theme</label>
+        </div>
+        <div class="slider">
+            <label for="borderRadiusRange">Border & Corner Radius</label>
+            <input type="range" id="borderRadiusRange" min="0" max="50" value="2" oninput="updateBorderRadius()">
+            <p id="borderRadiusValue">2px</p>
+        </div>
+        <div class="slider">
+            <label for="borderSizeRange">Border Size</label>
+            <input type="range" id="borderSizeRange" min="1" max="20" value="2" oninput="updateBorderSize()">
+            <p id="borderSizeValue">2px</p>
+        </div>
+        <div class="divider"></div>
+        <div class="toggle">
+            <input type="checkbox" id="devModeToggle" onchange="toggleDevMode()">
+            <label for="devModeToggle">Developer Mode</label>
+        </div>
+        <div class="dev-details" id="devDetails" style="display: none;"></div>
+    </div>
+
+    <script>
+        function viewImage() {
+            var url = document.getElementById('imageUrl').value;
+            var img = document.getElementById('displayImage');
+            var details = document.getElementById('imageDetails');
+
+            img.onload = function() {
+                var width = img.naturalWidth;
+                var height = img.naturalHeight;
+                var fileSize = img.fileSize || img.src.length * 0.75;
+                var sizeKB = (fileSize / 1024).toFixed(2);
+                var sizeMB = (fileSize / (1024 * 1024)).toFixed(2);
+                details.innerHTML = `
+                    <p>Width: ${width}px</p>
+                    <p>Height: ${height}px</p>
+                    <p>Pixels: ${width * height}</p>
+                    <p>Size: ${sizeKB} KB (${sizeMB} MB)</p>
+                `;
+            };
+
+            img.onerror = function() {
+                details.innerHTML = `<p>QR Code</p>`;
+                generateQRCode(url);
+            };
+
+            img.src = url;
+        }
+
+        function toggleBorder() {
+            var img = document.getElementById('displayImage');
+            var borderColor = document.body.style.backgroundColor === 'rgb(18, 18, 18)' ? '#ffffff' : '#000000';
+            if (document.getElementById('borderToggle').checked) {
+                img.style.border = document.getElementById('borderSizeRange').value + 'px solid ' + borderColor;
+            } else {
+                img.style.border = 'none';
+            }
+        }
+
+        function toggleTheme() {
+            var body = document.body;
+            var img = document.getElementById('displayImage');
+            if (document.getElementById('themeToggle').checked) {
+                body.style.backgroundColor = '#121212';
+                body.style.color = '#ffffff';
+                if (document.getElementById('borderToggle').checked) {
+                    img.style.border = document.getElementById('borderSizeRange').value + 'px solid #ffffff';
+                }
+            } else {
+                body.style.backgroundColor = '#ffffff';
+                body.style.color = '#000000';
+                if (document.getElementById('borderToggle').checked) {
+                    img.style.border = document.getElementById('borderSizeRange').value + 'px solid #000000';
+                }
+            }
+        }
+
+        function updateBorderRadius() {
+            var value = document.getElementById('borderRadiusRange').value;
+            var img = document.getElementById('displayImage');
+            img.style.borderRadius = value + 'px';
+            document.getElementById('borderRadiusValue').textContent = value + 'px';
+        }
+
+        function updateBorderSize() {
+            var value = document.getElementById('borderSizeRange').value;
+            var img = document.getElementById('displayImage');
+            img.style.border = value + 'px solid ' + (document.body.style.backgroundColor === 'rgb(18, 18, 18)' ? '#ffffff' : '#000000');
+            document.getElementById('borderSizeValue').textContent = value + 'px';
+        }
+
+        function toggleDevMode() {
+            var devMode = document.getElementById('devModeToggle').checked;
+            if (devMode) {
+                var confirmDevMode = confirm("Warning: Enabling Developer Mode will display detailed browser properties. Do you want to continue?");
+                if (confirmDevMode) {
+                    showDevDetails();
+                } else {
+                    document.getElementById('devModeToggle').checked = false;
+                }
+            } else {
+                hideDevDetails();
+            }
+        }
+
+        function showDevDetails() {
+            var devDetails = document.getElementById('devDetails');
+            devDetails.style.display = 'block';
+            devDetails.innerHTML = `
+                <p>App Name: ${navigator.appName}</p>
+                <p>App Code Name: ${navigator.appCodeName}</p>
+                <p>App Version: ${navigator.appVersion}</p>
+                <p>User Agent: ${navigator.userAgent}</p>
+                <p>Platform: ${navigator.platform}</p>
+                <p>Language: ${navigator.language}</p>
+                <p>Online: ${navigator.onLine}</p>
+                <p>Cookies Enabled: ${navigator.cookieEnabled}</p>
+            `;
+        }
+
+        function hideDevDetails() {
+            var devDetails = document.getElementById('devDetails');
+            devDetails.style.display = 'none';
+            devDetails.innerHTML = '';
+        }
+
+        function generateQRCode(url) {
+            var img = document.getElementById('displayImage');
+            img.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}`;
+        }
+    </script>
+</body>
+</html>
+

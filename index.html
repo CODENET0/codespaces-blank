@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web App Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(90deg, #6200ea, #3700b3);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            background:#6200ea;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .search-bar {
+            margin: 1rem auto;
+            text-align: center;
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            background-color: #f5f5f5;
+            padding: 1rem 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar input {
+            width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 50px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .search-bar input:focus {
+            outline: none;
+            border-color: #6200ea;
+            box-shadow: 0 2px 5px rgba(98, 0, 234, 0.3);
+        }
+        .search-bar button {
+            position: absolute;
+            right: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(90deg, #6200ea, #3700b3);
+            border: none;
+            border-radius: 50%;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .search-bar button:hover {
+            background: linear-gradient(90deg, #3700b3, #6200ea);
+        }
+        .search-bar button img {
+            width: 20px;
+            height: 20px;
+        }
+        @media (max-width: 600px) {
+            .search-bar input {
+                width: 95%;
+            }
+            .search-bar button {
+                right: 5%;
+            }
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .app-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 1rem;
+            width: 200px;
+            text-align: center;
+            padding: 1rem;
+        }
+        .app-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .app-card h3 {
+            margin: 0.5rem 0;
+        }
+        .app-card a {
+            text-decoration: none;
+            color: #6200ea;
+            font-weight: bold;
+        }
+        section {
+            padding: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Web App Store</h1>
+    </header>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#changelog">Changelog</a>
+    </nav>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for apps..." onkeyup="filterApps()">
+        <button type="button">
+            <img src="https://static-00.iconduck.com/assets.00/search-icon-2044x2048-psdrpqwp.png" alt="Search">
+        </button>
+    </div>
+    <div class="container" id="appContainer">
+       
+        <div class="app-card">
+            <img src="https://img.utdstc.com/icon/ce6/4c5/ce64c5fdcab44eb799b11d71e554c06ede50bc8524cc906de9da7c9aed58983b:100">
+            <h3>Whatsapp</h3>
+            <a href="https://web.whatsapp.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://play-lh.googleusercontent.com/eN0IexSzxpUDMfFtm-OyM-nNs44Y74Q3k51bxAMhTvrTnuA4OGnTi_fodN4cl-XxDQc">
+            <h3>Spotify</h3>
+            <a href="https://open.spotify.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://yt3.googleusercontent.com/X1-thHeEEMyOFadgwobs8bPlYM53xxFbjqcPyFMPqDFkIxClabUJB0AgtSiQ-PG8km5zyG4Eww=s900-c-k-c0x00ffffff-no-rj">
+            <h3>Duolingo</h3>
+            <a href="https://www.duolingo.com/">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNcwtKecyjR-Wz57ArpQSVDU3vb6uOcLS5KQ&s">
+            <h3>Canva</h3>
+            <a href="https://www.canva.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHdLW-0xFWKHwul6BHiGXkJroADGGOcYdJ0A&s">
+            <h3>BlockBench</h3>
+            <a href="https://www.blockbench.net">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRS-meG8HDT-iFgfeMdVxdjT_zYLvMVrd8Nw&s">
+            <h3>Pinterest</h3>
+            <a href="https://pinterest.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbqj9Ii13d6hx5a9kyLnC5A8A96LDSaSZv_w&s">
+            <h3>GitHub</h3>
+            <a href="https://github.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://assets.mofoprod.net/network/images/discord.original.jpg">
+            <h3>Discord</h3>
+            <a href="https://discord.com/">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiXN9xSEe8unzPBEQOeAKXd9Q55efGHGB9BA&s">
+            <h3>FaceBook</h3>
+            <a href="https://www.facebook.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ074BXoD2hiJfQ2_SdxdXYQdDYVVfxj_EWUA&s">
+            <h3>Fancade</h3>
+            <a href="https://play.fancade.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2024/02/04/65c4d06d63ebc_com.google.android.apps.bard.png">
+            <h3>Gemini</h3>
+            <a href="https://gemini.google.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEcDkjGUpfrbMU0YsYhwq3xCuyovfgfFlkJw&s">
+            <h3>Copilot</h3>
+            <a href="https://copilot.microsoft.com/">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNawGxmFbwKwN5RdsJYapyrEDVsbZAQoXHWQ&s">
+            <h3>HiAnime</h3>
+            <a href="https://hianime.to/home">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://yt3.googleusercontent.com/584JjRp5QMuKbyduM_2k5RlXFqHJtQ0qLIPZpwbUjMJmgzZngHcam5JMuZQxyzGMV5ljwJRl0Q=s900-c-k-c0x00ffffff-no-rj">
+            <h3>YouTube</h3>
+            <a href="https://www.youtube.com/">Open App</a>
+        </div>
+        
+        <div class="app-card">
+            <img src="https://i0.wp.com/nealfun.pro/wp-content/uploads/2024/03/nealfun-pro.png?fit=512%2C512&ssl=1">
+            <h3>Neal Fun</h3>
+            <a href="https://neal.fun">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsW2X9EKdIJNWOm81uSet71pEkyeTOGjgCww&s">
+            <h3>Amazon</h3>
+            <a href="https://www.amazon.in/">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://store-images.s-microsoft.com/image/apps.14475.9007199266245695.9c915e5c-d0d3-411b-90e8-90213b159483.193a1d36-acfb-4f3f-bebd-807ab33293ee">
+            <h3>Flipkart</h3>
+            <a href="https://www.flipkart.com/">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://static-00.iconduck.com/assets.00/reddit-icon-2048x2048-ya82zt8l.png">
+            <h3>Reddit</h3>
+            <a href="https://www.reddit.com">Open App</a>
+        </div>
+
+         <div class="app-card">
+            <img src="https://avatars.githubusercontent.com/u/68739?s=280&v=4">
+            <h3>Quora</h3>
+            <a href="https://www.quora.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://img.utdstc.com/icon/0da/21f/0da21f117fdafe091f70598d9e33b7e999fba32bba5627608149b6ad176e6a1b:200">
+            <h3>Mcpedl</h3>
+            <a href="https://mcpedl.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="https://www.gstatic.com/marketing-cms/5e/ec/5b5baeb34571b791b2020d4cacad/meta-image.png">
+            <h3>Google Translate</h3>
+            <a href="https://translate.google.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>image link viewer</h3>
+            <a href="image.html">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>Mind reader</h3>
+            <a href="mind.html">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>No App</h3>
+            <a href="https://none.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>No App</h3>
+            <a href="https://none.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>No App</h3>
+            <a href="https://none.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>No App</h3>
+            <a href="https://none.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>No App</h3>
+            <a href="https://none.com">Open App</a>
+        </div>
+
+        <div class="app-card">
+            <img src="app2.png">
+            <h3>No App</h3>
+            <a href="https://none.com">Open App</a>
+        </div>
+
+
+
+<!--blueprint-->
+
+        <div class="app-card">
+            <img src="https://cdn-icons-png.flaticon.com/512/262/262038.png">
+            <h3>more</h3>
+            <a href="https://none.com">Open App</a>
+        </div>
+
+        
+        
+        <!-- Add more app cards as needed -->
+    </div>
+    <section id="about">
+        <h2>About</h2>
+        <p>This is a web app store where you can find and explore various web applications. You can use apps without installing by running it in a browser. This app give you all the web links in one place.</p>
+    </section>
+    <section id="changelog">
+        <h2>Changelog</h2>
+        <p>Version 1.0: Initial release with basic features and search functionality.</p>
+    </section>
+    <script>
+        function filterApps() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const appContainer = document.getElementById('appContainer');
+            const appCards = appContainer.getElementsByClassName('app-card');
+
+            for (let i = 0; i < appCards.length; i++) {
+                const appTitle = appCards[i].getElementsByTagName('h3')[0];
+                if (appTitle) {
+                    const textValue = appTitle.textContent || appTitle.innerText;
+                    if (textValue.toLowerCase().indexOf(filter) > -1) {
+                        appCards[i].style.display = "";
+                    } else {
+                        appCards[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

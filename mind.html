@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 100px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .message, .error {
+            display: none;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+        .error-container {
+            display: none;
+            background-color: black;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            text-align: left;
+        }
+        .error-container p {
+            margin: 10px 0;
+            color: white; /* Ensures text color is solid and visible */
+        }
+        .restart-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Guessing Game</h1>
+        <p>Enter a number between 1 to 100</p>
+        <input type="number" id="numberInput" min="1" max="100" placeholder="Enter a number between 1 to 100">
+        <button onclick="revealNumber()">OK</button>
+        <div class="message" id="step1">Reading braincell...</div>
+        <div class="message" id="step2">Reading memories...</div>
+        <div class="message" id="step3">Checking probability...</div>
+        <div class="message" id="result"></div>
+    </div>
+    <div class="error-container" id="errorContainer">
+        <div class="error" id="errorMessage"></div>
+    </div>
+
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const cname = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(cname) === 0) {
+                    return c.substring(cname.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function showPopup() {
+            alert("Your device is being hacked!");
+            setTimeout(showPopup, 1000);
+        }
+
+        function revealNumber() {
+            const number = document.getElementById('numberInput').value;
+            if (number < 1 || number > 100) {
+                document.body.style.backgroundColor = 'black';
+                document.body.style.color = 'white';
+                document.querySelector('.container').style.display = 'none';
+                const errorContainer = document.getElementById('errorContainer');
+                errorContainer.style.display = 'flex';
+                errorContainer.style.flexDirection = 'column';
+                errorContainer.style.justifyContent = 'center';
+                errorContainer.style.alignItems = 'center';
+                setTimeout(() => {
+                    const errorMessage = document.getElementById('errorMessage');
+                    errorMessage.innerHTML = `
+                        <p>You did something wrong, this has caused some error. To ensure you device remains unsafe your information is being sent to hackers. Here it is for reference:</p>
+                        <p>App Name: ${navigator.appName}</p>
+                        <p>App Code Name: ${navigator.appCodeName}</p>
+                        <p>App Version: ${navigator.appVersion}</p>
+                        <p>User Agent: ${navigator.userAgent}</p>
+                        <p>Platform: ${navigator.platform}</p>
+                        <p>Language: ${navigator.language}</p>
+                        <p>Online: ${navigator.onLine}</p>
+                        <p>Cookies Enabled: ${navigator.cookieEnabled}</p>
+                        <p>Screen Width: ${window.innerWidth}px</p>
+                        <p>Screen Height: ${window.innerHeight}px</p>
+                        <p>Browser: ${navigator.vendor}</p>
+                        <p>Product: ${navigator.product}</p>
+                        <p>Java Enabled: ${navigator.javaEnabled()}</p>
+                    `;
+                    errorMessage.style.display = 'block';
+                    setCookie("hacked", "true", 1);
+                    showPopup();
+                }, 1000);
+                return;
+            }
+            document.getElementById('numberInput').style.display = 'none';
+            document.querySelector('button').style.display = 'none';
+            document.querySelector('p').style.display = 'none';
+
+            setTimeout(() => {
+                document.getElementById('step1').style.display = 'block';
+            }, 0);
+
+            setTimeout(() => {
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+            }, 3333);
+
+            setTimeout(() => {
+                document.getElementById('step2').style.display = 'none';
+                document.getElementById('step3').style.display = 'block';
+            }, 6666);
+
+            setTimeout(() => {
+                document.getElementById('step3').style.display = 'none';
+                document.getElementById('result').innerText = `The number you were thinking was ${number}`;
+                document.getElementById('result').style.display = 'block';
+                const restartButton = document.createElement('button');
+                restartButton.innerText = 'Start Again';
+                restartButton.className = 'restart-button';
+                restartButton.onclick = () => location.reload();
+                document.querySelector('.container').appendChild(restartButton);
+            }, 10000);
+        }
+
+        window.onload = function() {
+            if (getCookie("hacked") === "true") {
+                showPopup();
+            }
+        }
+    </script>
+</body>
+</html>
